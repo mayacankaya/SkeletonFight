@@ -7,7 +7,7 @@ namespace AlictusGD
     public class SkeletonController : MonoBehaviour
     {
         public NavMeshAgent agent;
-
+        [SerializeField] GameObject _hand;
         public Transform player;
         [SerializeField] Animator _animator;
         public LayerMask whatIsGround, whatIsPlayer;
@@ -26,7 +26,7 @@ namespace AlictusGD
 
         //States
         public float attackRange;
-        public bool playerInAttackRange;
+        public bool playerInAttackRange, isDeath = false;
 
         private void Awake()
         {
@@ -34,15 +34,15 @@ namespace AlictusGD
             agent = GetComponent<NavMeshAgent>();
         }
         bool animB = true;
+
         private void Update()
         {
-            //Check for sight and attack range
-
-            playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
-
-
-            if (!playerInAttackRange) ChasePlayer();
-            else if (playerInAttackRange) { anim(); Invoke(nameof(AttackPlayer), 1.8f); }
+            if (!isDeath)
+            {
+                playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+                if (!playerInAttackRange) ChasePlayer();
+                else if (playerInAttackRange) { anim(); Invoke(nameof(AttackPlayer), 1.8f); }
+            }
         }
 
         void anim()
@@ -54,6 +54,7 @@ namespace AlictusGD
                 animB = false;
             }
         }
+        //takip etme
         private void ChasePlayer()
         {
 
@@ -61,43 +62,55 @@ namespace AlictusGD
             _animator.SetTrigger("Run");
 
         }
-
+        GameObject Go;
+        //Ateþ etme Kodu
         private void AttackPlayer()
         {
-            //Make sure enemy doesn't move
-            agent.SetDestination(transform.position);
-
-            transform.LookAt(player);
-
-            if (!alreadyAttacked)
+            if (agent != null)
             {
-                ///Attack code here
-                Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-                rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-                rb.AddForce(transform.up * 8f, ForceMode.Impulse);
-                ///End of attack code
-
-                alreadyAttacked = true;
-                animB = true;
-                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+                //yürümesini engeller
+                agent.SetDestination(transform.position);
+                transform.LookAt(player);
+                if (!alreadyAttacked)
+                {
+                    ///Attack code here
+                    Go = Instantiate(projectile, transform.position, Quaternion.identity);
+                    Rigidbody rb = Go.GetComponent<Rigidbody>();
+                    rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+                    rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+                    ///End of attack code
+                    alreadyAttacked = true;
+                    animB = true;
+                    Invoke(nameof(ResetAttack), timeBetweenAttacks);
+                }
             }
         }
         private void ResetAttack()
         {
             alreadyAttacked = false;
+            Destroy(Go);
         }
-
-        public void TakeDamage(int damage)
+        //Ölme Kodu
+        public void DestroyEnemy()
         {
-            health -= damage;
-
-            if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+            isDeath = true;
+            alreadyAttacked = true;
+            GameManager.Instance._killedEnemy++;
+            GameManager.Instance._enemyText.text = GameManager.Instance._killedEnemy.ToString();
+            Destroy(Go);
+            GetComponent<CapsuleCollider>().enabled = false;
+            GetComponent<SphereCollider>().enabled = false;
+            PlayerController.Instance.As.clip = PlayerController.Instance._attackCl;
+            PlayerController.Instance.As.Play();
+            _animator.SetTrigger("Death");
+            StartCoroutine(animFinish());
         }
-        private void DestroyEnemy()
+        IEnumerator animFinish()
         {
+            yield return new WaitForSeconds(2.5f);
+            GameManager.Instance.EnemyCreate(1);
             Destroy(gameObject);
         }
-
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;

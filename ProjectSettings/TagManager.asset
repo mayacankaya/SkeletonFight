@@ -8,6 +8,7 @@ TagManager:
   - EnemyProjectile
   - Coin
   - Coins
+  - ParentSkeleton
   layers:
   - Default
   - TransparentFX

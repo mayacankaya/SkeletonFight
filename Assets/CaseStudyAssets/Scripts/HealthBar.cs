@@ -8,6 +8,7 @@ namespace AlictusGD
     {
         public GameObject player;
 
+        //HealthBarKullanýcýyý takip eder
         private void Update()
         {
             this.transform.position = new Vector3(player.transform.position.x, 6, player.transform.position.z);

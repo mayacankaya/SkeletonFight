@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4216855019582930007}
   - component: {fileID: 4216855019582930002}
   - component: {fileID: 4216855019582930001}
+  - component: {fileID: 8292933482697229577}
   - component: {fileID: 4216855019582930000}
   - component: {fileID: 4216855019582930003}
   - component: {fileID: -4570408230210375736}
@@ -29,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4216855019582930006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.008, y: 0.322, z: 0.082}
+  m_LocalPosition: {x: 0.008, y: 0.11, z: 0.082}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -86,6 +87,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8292933482697229577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4216855019582930006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c6c74a1c538fd408dfc5793ca93581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &4216855019582930000
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -141,7 +154,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.3
+  m_Time: 0.08
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -150,18 +163,9 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 0.30168152
         inSlope: 0
         outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.4925807
-        value: 0.06462409
-        inSlope: 0.37381697
-        outSlope: 0.37381697
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
@@ -181,7 +185,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0.07438707, a: 1}
-      key1: {r: 1, g: 0, b: 0.07438707, a: 1}
+      key1: {r: 1, g: 0, b: 0.54534245, a: 1}
       key2: {r: 0.90196085, g: 0.4666667, b: 0.5019608, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
